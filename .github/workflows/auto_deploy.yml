@@ -37,7 +37,7 @@ jobs:
          response=$(curl -X POST -H "Accept: Application/json" -H "Content-Type: application/json" ${{ secrets.SERVER_URL }}/rest/v2/users/authenticate -d '{"email":"${{ secrets.USER_NAME }}","password":"${{ secrets.PASSWORD }}"}' -c cookie.txt )
          if [ $? -eq 0 ]; then
             if [[ ! "$response" =~ "true" ]]; then
-                  echo "something went wrong $responce"
+                  echo "something went wrong $response"
             else
               Login=true
             fi
