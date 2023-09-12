@@ -38,7 +38,7 @@ jobs:
          if [ $? -eq 0 ]; then
             if [[ ! "$response" =~ "true" ]]; then
                   echo "something went wrong $responce"
-            else [[ "$response" =~ $APPNAME ]]; then
+            else [[ "$response" =~ $APPNAME ]]; 
               Login=true
             fi
           fi
