@@ -46,7 +46,7 @@ jobs:
         end_time=$((SECONDS + 800)) 
         SERVER_REST_URL="${{ secrets.SERVER_URL }}/rest/v2"
         function check_app_existence() {
-            API_URL="https://ovh36.antmedia.io:5443/rest/v2/applications"
+            API_URL="${{ secrets.SERVER_URL }}/rest/v2/applications"
             APPNAME="Conference"
             response=$(curl -s "$API_URL" -b cookie.txt)
         
@@ -67,8 +67,6 @@ jobs:
             curl -X PUT -H "Accept: Application/json" -H "Content-Type: multipart/form-data" -F "file=@./$WAR_FILE_NAME" "${{ secrets.SERVER_URL }}/rest/v2/applications/Conference" -b cookie.txt
             echo "create request sent "
         }
-
-
 
         while [ $SECONDS -lt $end_time ]; do
             sleep 5
