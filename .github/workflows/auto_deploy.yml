@@ -36,13 +36,12 @@ jobs:
         while ! $Login; do
          response=$(curl -X POST -H "Accept: Application/json" -H "Content-Type: application/json" ${{ secrets.SERVER_URL }}/rest/v2/users/authenticate -d '{"email":"${{ secrets.USER_NAME }}","password":"${{ secrets.PASSWORD }}"}' -c cookie.txt )
         if [[ ! "$response" =~ "true" ]]; then
-              echo "something went wrong $response"
+          echo "something went wrong $response"     
+          sleep 3m
         else
           Login=true
           break
         fi
-
-        sleep 3m
         done
         
     - name: Delete Old App
