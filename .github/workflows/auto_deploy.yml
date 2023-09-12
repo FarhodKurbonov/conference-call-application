@@ -43,11 +43,10 @@ jobs:
       run: |
         export WAR_FILE_NAME="ConferenceCall.war"
         create_request_sent=false
+        APPNAME="Conference"
         end_time=$((SECONDS + 800)) 
-        SERVER_REST_URL="${{ secrets.SERVER_URL }}/rest/v2"
         function check_app_existence() {
             API_URL="${{ secrets.SERVER_URL }}/rest/v2/applications"
-            APPNAME="Conference"
             response=$(curl -s "$API_URL" -b cookie.txt)
         
             if [ $? -eq 0 ]; then
@@ -70,7 +69,6 @@ jobs:
 
         while [ $SECONDS -lt $end_time ]; do
             sleep 5
-        
             app_exist=$(check_app_existence)
             echo "check if app exist $app_exist"
             if [ $app_exist -eq -1 ]; then
