@@ -48,7 +48,6 @@ jobs:
     - name: Delete Old App
       run: |
         curl -i -X DELETE -H "Accept: Application/json" -H "Content-Type: application/json" "${{ secrets.SERVER_URL }}/rest/v2/applications/Conference" -b cookie.txt
-        sleep 10
         
     - name: Create New App
       run: |
