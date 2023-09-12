@@ -32,7 +32,18 @@ jobs:
         
     - name: Login to server
       run: |
-        curl -X POST -H "Accept: Application/json" -H "Content-Type: application/json" ${{ secrets.SERVER_URL }}/rest/v2/users/authenticate -d '{"email":"${{ secrets.USER_NAME }}","password":"${{ secrets.PASSWORD }}"}' -c cookie.txt 
+        Login=false
+        while ! $Login; do
+          curl -X POST -H "Accept: Application/json" -H "Content-Type: application/json" ${{ secrets.SERVER_URL }}/rest/v2/users/authenticate -d '{"email":"${{ secrets.USER_NAME }}","password":"${{ secrets.PASSWORD }}"}' -c cookie.txt 
+              response=$(curl -s "$API_URL" -b cookie.txt)
+  
+          if [ $? -eq 0 ]; then
+            if [[ ! "$response" =~ "true" ]]; then
+                  echo "something went wrong $responce"
+            else [[ "$response" =~ $APPNAME ]]; then
+              Login=true
+            fi
+        done
         
     - name: Delete Old App
       run: |
