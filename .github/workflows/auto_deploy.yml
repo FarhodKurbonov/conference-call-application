@@ -64,14 +64,13 @@ jobs:
             if [ $? -eq 0 ]; then
                 if [[ "$response" =~ "html" ]]; then
                     echo "something went wrong $responce"
-                elif [[ "$response" =~ $APPNAME ]];
+                elif [[ "$response" =~ $APPNAME ]]; then
                     echo 1  # App exists
                 else
                     echo 0  # App does not exist
                 fi
             else
                 echo -1
-        
             fi
         }
         function send_create_request() {
