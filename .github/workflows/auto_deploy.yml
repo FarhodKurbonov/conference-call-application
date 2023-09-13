@@ -1,9 +1,16 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
 
 name: Java CI with Maven
 
-on: [push]
-#  schedule:
-#    - cron: '0 0 * * *'
+on:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
@@ -25,23 +32,12 @@ jobs:
         
     - name: Login to server
       run: |
-        Login=false
-        while ! $Login; do
-          echo "sending login request "     
-          response="$(curl -X POST -H "Accept: Application/json" -H "Content-Type: application/json" ${{ secrets.SERVER_URL }}/rest/v2/users/authenticate -d '{"email":"${{ secrets.USER_NAME }}","password":"${{ secrets.PASSWORD }}"}' -c cookie.txt)"
-          if [[ ! "$response" =~ "true" ]]; then
-            echo "something went wrong $response"     
-            sleep 10
-
-          else
-            Login=true
-            break
-          fi
-        done
+        curl -X POST -H "Accept: Application/json" -H "Content-Type: application/json" ${{ secrets.SERVER_URL }}/rest/v2/users/authenticate -d '{"email":"${{ secrets.USER_NAME }}","password":"${{ secrets.PASSWORD }}"}' -c cookie.txt 
         
     - name: Delete Old App
       run: |
         curl -i -X DELETE -H "Accept: Application/json" -H "Content-Type: application/json" "${{ secrets.SERVER_URL }}/rest/v2/applications/Conference" -b cookie.txt
+        sleep 10
         
     - name: Create New App
       run: |
@@ -56,7 +52,7 @@ jobs:
             if [ $? -eq 0 ]; then
                 if [[ "$response" =~ "html" ]]; then
                     echo "something went wrong $responce"
-                elif [[ "$response" =~ $APPNAME ]];
+                elif [[ "$response" =~ $APPNAME ]]; then
                     echo 1  # App exists
                 else
                     echo 0  # App does not exist
