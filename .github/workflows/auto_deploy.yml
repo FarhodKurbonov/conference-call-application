@@ -42,6 +42,7 @@ jobs:
             sleep 10
 
           else
+            echo "login successfull $response"
             Login=true
             break
           fi
