@@ -71,7 +71,7 @@ var mediaConstraints = {
   audio: audioQualityConstraints.audio,
 };
 
-let websocketURL = process.env.REACT_APP_WEBSOCKET_URL;
+let websocketURL = "wss://mediahub.datamicron.com:5443/WebRTCAppEE/websocket?target=origin";
 
 if (!websocketURL) {
   if (document.getElementById("root").getAttribute("data-websocket-url")) {
@@ -303,6 +303,14 @@ function AntMedia() {
       await checkDevices();
       if (recreateAdaptor && webRTCAdaptor == null) {
         setWebRTCAdaptor(new WebRTCAdaptor({
+          peerconnection_config : {
+            iceServers: [{
+              urls: 'turn:turn.neura.datamicron.com:5349',
+              username: "admin",
+              credential: "web@1234"
+            }],
+            sdpSemantics: 'unified-plan'
+          },
           websocket_url: websocketURL,
           mediaConstraints: mediaConstraints,
           isPlayMode: playOnly,
